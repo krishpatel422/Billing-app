@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        input::-wedkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+            text-align: center;
+            
+        }
+        input[name=total]{
+            text-align: center;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .form-control {
+               border: 0 !important;
+            }
+            .inpuqt-group-text {
+              border: 0 !important;
+              background-color: wheat !important;
+            }
+            .table {
+                border: 1px solid black !important;
+            }
+            .card {
+             border: 0 !important;       
+              }
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/icons8-invoice-100.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <title>Invoice System</title>
+</head>
+<body>
+    
+ <div class="container mt-5">
+     <div class="card">
+            <div class="card-header card-header-dark">
+                <h2 class="card-title text-center">Invoice System</h2>
+            </div>
+         <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">      
+                            <span class="input-group-text">Customer</span>
+                        </div>  
+                      <input type="text" name="customer" id="customer" class="form-control " >     
+                    </div>
+                </div> 
+                   <div class="col-md-6 col-12">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">Phone No</span>
+                        </div>  
+                         <input type="text" name="Phone No" id="Phone No" class="form-control " >
+                    </div>
+                   </div> 
+            </div>
+             <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">      
+                            <span class="input-group-text">City/village</span>
+                        </div>  
+                      <input type="text" name="city" id="city" class="form-control " >     
+                    </div>
+                </div> 
+                   <div class="col-md-6 col-12">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">Date</spant>
+                        </div>  
+                         <input type="date" name="date" id="date" class="form-control " >
+                    </div>
+                   </div> 
+            </div>
+            <div class="row mt-3 ">
+                <div class="col-12">
+                    <button class="but btn-primary btn-sn float-right no-print" style="width: 50px; background-color: rgb(3, 168, 233)"onclick="btnAdd()">+</button>
+                </div>
+            </div>
+             <div class="row mt-3">
+                <div class="col-12">
+                    <table class="table table-bordered table-striped w-100">
+                        <thead class="table-dark">
+                             <tr>
+                                <th>S.No</th>
+                                <th class="text-center">Product</th>
+                                <th class="text-center">QTY</th>
+                                <th class="text-center">Ser.No</th>
+                                <th class="text-center">Rate</th>
+                                <th class="text-center">Pending</th>
+                                <th class="text-center">Deposite</th>
+                                <th class="no-print">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invBody">
+                            <tr id="invRow" class="d-none">
+                                <td><input type="text" name="sno" id="sno" class="form-control " ></td>
+                                <td><input type="text" name="product" id="product" class="form-control " ></td>
+                                <td><input type="text" name="qty" id="qty" class="form-control "min="0" onchange="Calc(this)"></td>
+                                <td><input type="text" name="serno" id="serno" class="form-control " ></td>
+                                <td><input type="text" name="rate" id="rate" class="form-control "min="0" onchange="Calc(this)" ></td>
+                                <td><input type="text" name="pending" id="pending" class="form-control "min="0" onchange="Calc(this)" ></td>
+                                <td><input type="text" name="deposite" id="deposite" class="form-control "min="0" onchange="Calc(this)" ></td>
+                                <td class="no-print"><button class="btn btn-danger btn-sm " style="width: 50px;" onclick="btnDel(this)">x</button></td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+             </div>
+             <div class="row mt-5">
+                <div class="col-md-4 col-12">
+                    <button class="btn btn-primary no-print" id="btn_print" onclick="docPrint()">Print</button>
+                </div>
+                <div class="col-md-4" col-12></div>
+                <div class="col-md-4 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="input-group" mb-3>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Total</span>
+                                </div>
+                                <input type="number" name="FTotal" id="FTotal" class="form-control " min="0" readonly>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="input-group" mb-3>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">GST</span>
+                                </div>
+                                <input type="number" name="FGST" id="FGST" class="form-control " >
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="input-group" mb-3>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">G.Total</span>
+                                </div>
+                                <input type="number" name="FNet" id="FNet" class="form-control " readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+             </div>
+
+            </div>
+         </div>
+     </div>
+ </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>  
+  <script>
+    function btnAdd() {
+    let newRow = $("#invRow").clone();
+    newRow.removeAttr("id");         // id hatao
+    newRow.removeClass("d-none");    // row visible karo
+    newRow.find("input").val("");    // inputs clear karo
+    $("#invBody").append(newRow);
+}
+
+function btnDel(x) {
+    $(x).closest("tr").remove();
+    Calc(); // delete ke baad bhi recalc
+}
+
+function Calc() {
+    let total = 0;
+
+    $("#invBody tr").not("#invRow").each(function () {
+        let qty = parseFloat($(this).find("[name='qty']").val()) || 0;
+        let rate = parseFloat($(this).find("[name='rate']").val()) || 0;
+        let pending = parseFloat($(this).find("[name='pending']").val()) || 0;
+        let deposite = parseFloat($(this).find("[name='deposite']").val()) || 0;
+
+        total += (qty * deposite);
+    });
+
+    $("#FTotal").val(total.toFixed(2));
+
+    let gst = parseFloat($("#FGST").val()) || 0;
+    let grandTotal = total + (total * gst / 100);
+
+    $("#FNet").val(grandTotal.toFixed(2));
+}
+
+// GST change hone par bhi calc chale
+$("#FGST").on("input", Calc);
+
+// Input fields change hone par automatic calc
+$(document).on("input", "[name='qty'], [name='rate'], [name='pending'], [name='deposite']", Calc);
+
+function docPrint(){
+    window.print();
+}
+
+  </script>
+
+</body></html>
